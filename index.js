@@ -1,29 +1,37 @@
+
+const newsUrl = 'http://api.mediastack.com/v1/news?access_key='
+const urlCoin = `https://api.pro.coinbase.com`
+const newsApiKey = '03e6b37738146acd68dffe5329b6cc10'
 // date info
-let unixDate = new Date() - 1
-console.log(unixDate)
-let year 
-let day 
 let month = []
-
-function timeConverter(UNIX_timestamp){
-  let a = new Date(UNIX_timestamp);
-  year = a.getFullYear();
-  month.push(a.getMonth()+1);
-  day = a.getDate();
-  let hour = a.getHours();
-  let min = a.getMinutes();
-  let sec = a.getSeconds();
-  let time = day + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-  return time;
-}
-timeConverter(unixDate)
-
-if(month.length <2){
-  console.log('less than 2')
+let startMonth = []
+let date = new Date();
+let startDate = new Date(date - 604800000) //minus 7 days
+let year = date.getFullYear()
+let startYear = startDate.getFullYear()
+month.push(date.getMonth()+1)
+startMonth.push(startDate.getMonth()+1)
+let day = date.getDate()
+let startDay = startDate.getDate()
+// add a zero to months with one digit to make sure api fetch is in correct format
+if(month[0] < 10){
   month = `0${month}`
 }
-console.log(day-1
-  )
+if(startMonth[0] <10){
+  startMonth = `0${startMonth}`
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  stats()
+  news()
+  cryptoImage()
+  priceTicker()
+  candles()
+  chartCreate()
+})
+
+
+document.getElementById('priceSubmit').addEventListener('click',priceAlert)
 
 // Event listeners for drop downchanges 
 document.getElementById('crypto').addEventListener('change',function(){
@@ -35,20 +43,20 @@ document.getElementById('crypto').addEventListener('change',function(){
   chartCreate()
   priceTicker()
 }) 
+
 // fetches price data every 10 seconds
+let currentPrice = 'price'
 setInterval(priceTicker,5000)
-function priceTicker(){
-  let dropDown = document.getElementById('crypto').value
-  fetch(`${urlCoin}/products/${dropDown}/ticker`)
-  .then(res => res.json())
-  .then(function(json){
-      
-      document.getElementById('currentPrice').innerText = `$ ${json.price}`
-      // console.log(json) delete later
+  function priceTicker(){
+    let dropDown = document.getElementById('crypto').value
+    fetch(`${urlCoin}/products/${dropDown}/ticker`)
+    .then(res => res.json())
+    .then(function(json){
+        document.getElementById('currentPrice').innerText = `$ ${json.price}`
+        currentPrice = json.price
   })
 }
 //fetches STATS data for whichever crypto is selected in the drop down
-const urlCoin = `https://api.pro.coinbase.com`
 function stats(){
     let dropDown = document.getElementById('crypto').value
     fetch(`${urlCoin}/products/${dropDown}/stats`)
@@ -62,14 +70,10 @@ function stats(){
         document.getElementById('volume30Day').innerText = parseFloat(objStats.volume_30day).toFixed(0)
     })
 }
-stats()
-
 // top google news articles on selected crypto
-const newsUrl = 'http://api.mediastack.com/v1/news?access_key='
-const newsApiKey = '03e6b37738146acd68dffe5329b6cc10'
 function news(){
-  
   let dropDown = document.getElementById('crypto').value
+  
   fetch(`${newsUrl}${newsApiKey}&keywords=${dropDown}&languages=en&date=${year}-${month}-${day}`)
   .then(res => res.json())
   .then(function(json){
@@ -83,9 +87,6 @@ function news(){
     });
   })
 }
-news()
-
-
 // changes pic near dropdown list
 function cryptoImage(){
   let btcPic = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/183px-BTC_Logo.svg.png'
@@ -100,6 +101,44 @@ function cryptoImage(){
     document.getElementById('cryptoImage').src = adaPic
   }
 }
-cryptoImage()
 
 
+// price alert
+function priceAlert(event){
+  let minPrice = document.getElementById('minPrice').value
+  let maxPrice = document.getElementById('maxPrice').value
+  if(minPrice >= maxPrice){
+    window.alert('Min Price cannot be equal to or greater than Max Price')
+    document.getElementById('maxPrice').value = ''  
+    document.getElementById('myPopup').style.visibility='hidden'
+  }else{
+    let priceCheck = setInterval( () =>{ 
+    document.getElementById('priceSubmit').addEventListener('click',()=> clearInterval(priceCheck))
+    if(minPrice >= maxPrice && maxPrice !== ''){
+      window.alert('Min Price cannot be equal to or greater than Max Price')
+      document.getElementById('maxPrice').value = ''
+      clearInterval(priceCheck)
+    }
+    if (parseFloat(currentPrice) > parseFloat(maxPrice) && maxPrice !== '') {
+      console.log(maxPrice)
+      console.log('max price alert')
+      document.getElementById('myPopup').style.visibility='visible'
+      document.getElementById('myPopup').innerText = 'Max Price Limit Reached'
+    }else if(parseFloat(currentPrice) < parseFloat(minPrice) && minPrice !== ''){
+      console.log('min price alert')
+      document.getElementById('myPopup').style.visibility='visible'
+      document.getElementById('myPopup').innerText = 'Minimum Price Limit Reached'
+    }else{
+      console.log('else')
+      document.getElementById('myPopup').style.visibility='hidden'
+    }
+    
+  }, 2000 )
+  }
+  
+  
+     event.preventDefault() 
+    
+}
+
+  

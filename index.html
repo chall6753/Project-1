@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-
 <link rel="stylesheet" href="index.css">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Crypto Tracker</title>
-  
 </head>
 <body>
   <h1>Crypto Currency Tracker</h1> 
   
   
- <div class='gridBlocks'>
-  <!-- drop down list for different currencies -->
-  <div class='dropdown'>
-    <select name = 'crypto' id='crypto'>
-      <option value="BTC-USD" selected>Bitcoin</option>
-      <option value="ETH-USD">Ethereum</option>
-      <option value="ADA-USD">Cardano</option>
-    </select>
-    <img src=""  id='cryptoImage'width=100px height=100px>
-    <!-- price ticker every 10 seconds -->
- <div id='priceTicker'>
-  <h2>Current Price</h2>
-    <dl>
-      <dd id='currentPrice'>price</dd>
-    </dl>
- </div>
-</div>
-    <!-- summary of crypto stats -->
+  <div class='gridBlocks'>
+    <!-- drop down list for different currencies -->
+    <div class='dropdown'>
+      <select name = 'crypto' id='crypto'>
+        <option value="BTC-USD" selected>Bitcoin</option>
+        <option value="ETH-USD">Ethereum</option>
+        <option value="ADA-USD">Cardano</option>
+      </select>
+      <img src=""  id='cryptoImage'width=100px height=100px>
+      <!-- price ticker every 10 seconds -->
+      <div id='priceTicker'>
+        <h2>Current Price</h2>
+          <dl>
+            <dd id='currentPrice'>price</dd>
+          </dl>
+      </div>
+  </div>
+  <!-- summary of crypto stats -->
   <div name= 'summary' id = 'summary'>
     <h2>Summary</h2>
     <dl class='summaryItems'>
@@ -48,34 +45,44 @@
     </dl>
   </div>
     <!-- chart -->
-<div id='chartContainer'>
-  <canvas id="volumeChart" height="500"></canvas>
-</div>
- </div>
-  
-   <!-- top news articles -->
+  <div id='chartContainer'>
+    <canvas id="volumeChart" height="500"></canvas>
+  </div> 
+  </div> 
+  <!--pop up alert  -->
+  <div class="popup" onclick=clearAlert()>
+  <span class="popuptext" id="myPopup">Popup text...</span>
+  </div>
+  <!-- min max price range alerts -->
+  <div>
+  <h2>Price Alert</h2>
+  <form action="">
+    <label>Min Price:</label>
+    <input type="text" id='minPrice' name='min price'>
+    <label>Max Price:</label>
+    <input type="text" id='maxPrice'>
+    <button type="submit" id='priceSubmit' >Submit</button>
+  </form>
+  </div>
+  <!-- top news articles -->
   <div name='news' id='news'>
     <ol class='news'>
       <h2>Top News</h2>
       <li>
         <img src="" alt="">
         <a id ='news0' href=""></a>
-          
       </li>
-        
       <li><a id ='news1' href=""></a></li>
       <li><a id ='news2' href=""></a></li>
       <li><a id ='news3' href=""></a></li>
       <li><a id ='news4' href=""></a></li>
     </ol>
-  </div>
+    </div>
 
+  <!-- java script -->
+  <script type="text/javascript" src="index.js"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type='text/javascript' src="chart.js"></script>
 
-
-
-<!-- java script -->
-<script type="text/javascript" src="index.js"></script>  
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type='text/javascript' src="chart.js"></script>
 </body>
 </html>
