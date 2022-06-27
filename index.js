@@ -13,13 +13,29 @@ month.push(date.getMonth()+1)
 startMonth.push(startDate.getMonth()+1)
 let day = date.getDate()
 let startDay = startDate.getDate()
-// add a zero to months with one digit to make sure api fetch is in correct format
+// add a zero to months with one digit to make sure correct format for news API
 if(month[0] < 10){
   month = `0${month}`
 }
 if(startMonth[0] <10){
   startMonth = `0${startMonth}`
 }
+
+let btn = document.createElement('button')
+document.body.appendChild(btn)
+btn.setAttribute('id', 'btn')
+document.getElementById('btn').addEventListener('click', changeColor)
+
+function changeColor(){
+  if (document.body.style.backgroundColor == 'red'){
+    console.log('asd')
+    document.body.style.backgroundColor = 'grey'
+  }else {
+    document.body.style.backgroundColor = 'red'
+  }
+  
+}
+
 
 document.addEventListener('DOMContentLoaded',()=>{
   stats()
@@ -29,8 +45,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   candles()
   chartCreate()
 })
-
-
 document.getElementById('priceSubmit').addEventListener('click',priceAlert)
 
 // Event listeners for drop downchanges 
@@ -89,7 +103,7 @@ function news(){
 }
 // changes pic near dropdown list
 function cryptoImage(){
-  let btcPic = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/183px-BTC_Logo.svg.png'
+  let btcPic = 'https://bitcoin.org/img/home/bitcoin-img.svg?1656252469'
   let ethPic = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/220px-Ethereum-icon-purple.svg.png'
   let adaPic = 'https://s3.cointelegraph.com/storage/uploads/view/a7872fcc56858227ffa183256a5d55e1.png'
   let dropDown = document.getElementById('crypto').value
@@ -101,8 +115,6 @@ function cryptoImage(){
     document.getElementById('cryptoImage').src = adaPic
   }
 }
-
-
 // price alert
 function priceAlert(event){
   let minPrice = document.getElementById('minPrice').value
@@ -120,24 +132,18 @@ function priceAlert(event){
       clearInterval(priceCheck)
     }
     if (parseFloat(currentPrice) > parseFloat(maxPrice) && maxPrice !== '') {
-      console.log(maxPrice)
-      console.log('max price alert')
       document.getElementById('myPopup').style.visibility='visible'
       document.getElementById('myPopup').innerText = 'Max Price Limit Reached'
     }else if(parseFloat(currentPrice) < parseFloat(minPrice) && minPrice !== ''){
-      console.log('min price alert')
       document.getElementById('myPopup').style.visibility='visible'
       document.getElementById('myPopup').innerText = 'Minimum Price Limit Reached'
     }else{
-      console.log('else')
       document.getElementById('myPopup').style.visibility='hidden'
     }
     
-  }, 2000 )
+    }, 2000 )
   }
-  
-  
-     event.preventDefault() 
+  event.preventDefault() 
     
 }
 

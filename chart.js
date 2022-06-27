@@ -55,7 +55,6 @@ function chartCreate(){
             responsive: true,
             maintainAspectRatio: false,
             animation:{duration:100}
-            
         }
     });
     setInterval(() => {myChart.update()}, 10);
